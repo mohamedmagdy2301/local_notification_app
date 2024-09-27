@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -25,12 +23,14 @@ class LocalNotificationService {
 
 // ! Show Basic Notification
   static Future showBasicNotification() async {
-    const NotificationDetails notificationDetails = NotificationDetails(
+    NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
       'channel_id 0',
       'basic channel',
       importance: Importance.max,
       priority: Priority.high,
+      sound: RawResourceAndroidNotificationSound(
+          'sound_test.wav'.split('.').first),
     ));
     await flutterLocalNotificationsPlugin.show(
       0,
