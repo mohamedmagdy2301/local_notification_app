@@ -19,8 +19,8 @@ class NotificationApp extends StatelessWidget {
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
-            width: 400,
-            height: 400,
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.55,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,

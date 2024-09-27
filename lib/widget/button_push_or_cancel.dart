@@ -16,7 +16,7 @@ class ButtonPushOrCancl extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          width: 250,
+          width: MediaQuery.of(context).size.width * 0.5,
           child: ElevatedButton(
             onPressed: onPressedToPush,
             style: ElevatedButton.styleFrom(
@@ -29,7 +29,6 @@ class ButtonPushOrCancl extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 20),
         IconButton(
           onPressed: onPressedToCancel,
           icon: const Icon(

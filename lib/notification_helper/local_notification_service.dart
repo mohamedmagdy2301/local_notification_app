@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -67,14 +70,20 @@ class LocalNotificationService {
       priority: Priority.high,
     ));
     tz.initializeTimeZones();
+    final String currentTimeZoneLocal =
+        await FlutterTimezone.getLocalTimezone();
+    // ? To get current local with way accuratlly
+    tz.setLocalLocation(tz.getLocation(currentTimeZoneLocal));
     await flutterLocalNotificationsPlugin.zonedSchedule(
       2,
       'Scheduled Notification',
       'Body',
-      //? To Get Current Time by local timezone
+      // ? To get current scheduled time by local timezone
       tz.TZDateTime.now(tz.local).add(
         const Duration(seconds: 10),
       ),
+      // ? To get static scheduled time by local timezone
+      // tz.TZDateTime(tz.local, 2024, 9, !!, !!, !!),
       notificationDetails,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
