@@ -20,7 +20,7 @@ class NotificationApp extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
             width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.55,
+            height: MediaQuery.of(context).size.height * 0.66,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,6 +48,14 @@ class NotificationApp extends StatelessWidget {
                       LocalNotificationService.showScheduledNotification(),
                   onPressedToCancel: () =>
                       LocalNotificationService.cancelNotificationById(2),
+                ),
+                //! Push or Cancel Daily Scheduled Notification
+                ButtonPushOrCancl(
+                  text: 'Daily Scheduled',
+                  onPressedToPush: () =>
+                      LocalNotificationService.showDailyScheduledNotification(),
+                  onPressedToCancel: () =>
+                      LocalNotificationService.cancelNotificationById(3),
                 ),
                 //! Cancel All Notification
                 SizedBox(

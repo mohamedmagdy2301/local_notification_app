@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -46,7 +48,7 @@ class LocalNotificationService {
     const NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
       'channel_id 1',
-      'basic channel',
+      'Repeating channel',
       importance: Importance.max,
       priority: Priority.high,
     ));
@@ -65,7 +67,7 @@ class LocalNotificationService {
     const NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
       'channel_id 2',
-      'basic channel',
+      'Scheduled channel',
       importance: Importance.max,
       priority: Priority.high,
     ));
@@ -89,6 +91,56 @@ class LocalNotificationService {
           UILocalNotificationDateInterpretation.absoluteTime,
       payload: 'data',
     );
+  }
+
+// ! Show Daily Scheduled Notification
+  static Future showDailyScheduledNotification() async {
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'channel_id 3',
+        'Daily Scheduled channel',
+        importance: Importance.max,
+        priority: Priority.high,
+      ),
+    );
+    tz.initializeTimeZones();
+    final String currentTimeZoneLocal =
+        await FlutterTimezone.getLocalTimezone();
+    // ? To get current local with way accuratlly
+    tz.setLocalLocation(tz.getLocation(currentTimeZoneLocal));
+    final tz.TZDateTime currentTime = tz.TZDateTime.now(tz.local);
+    log("currentTime : ${currentTime.hour}");
+    log("---------------------------------");
+    // ? To get static scheduled time by local timezone
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+      tz.local,
+      currentTime.year,
+      currentTime.month,
+      currentTime.day,
+      currentTime.hour,
+      56,
+    );
+    log("before update : ${scheduledDate.hour}");
+    log("---------------------------------");
+
+    if (scheduledDate.isBefore(currentTime)) {
+      scheduledDate = scheduledDate.add(const Duration(hours: 1));
+      log("after update : ${scheduledDate.hour}");
+      log("---------------------------------");
+    }
+
+    {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        3,
+        'Daily Scheduled Notification',
+        'Body',
+        scheduledDate,
+        notificationDetails,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        payload: 'data',
+      );
+    }
   }
 
 // ! Cancel All Notification
